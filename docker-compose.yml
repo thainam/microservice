@@ -1,0 +1,43 @@
+version: "3.5"
+services:
+  app:
+    build:
+      args:
+        user: thainam
+        uid: ${UID}
+      context: ./
+      dockerfile: Dockerfile
+    image: trainning
+    container_name: trainning-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8000:80
+    networks:
+      backend:
+        aliases:
+          - trainning-app
+  db:
+    image: mysql:5.7
+    container_name: trainning-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - ./run/var:/var/lib/mysql
+    networks:
+      backend:
+        aliases:
+          - trainning-db
+
+networks:
+  backend:
+    name: backend-network
