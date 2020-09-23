@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\SendNotificationEmailJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // $schedule->job(new SendNotificationEmailJob())
+        //     ->description('Tarefa para enviar notificações por email das transações realizadas.')
+        //     ->everyMinute() // Para testar
+        //     ->withoutOverlapping();
     }
 }

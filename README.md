@@ -1,24 +1,24 @@
-# Microservice example using Lumen
+# Microservice
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+## Database Data ##
+    - The dump data can be found in ./mysql-dump/database.sql.
+    - The database diagram can be found in ./docs/db-diagram.mwb.
+    - It will be imported after up the containers in docker.
+    - To see database data you can log in to mariadb doing the following:
+        - Run command -> docker exec -it db  bash -c "mysql -u root -p"
+        - Run command -> use microservice;
 
-This microservice is just an example for building a faster API with this microframework created by Laravel.
+## Available Routes ##
+    - (GET) /user
+    - (POST) /transaction
 
-## Official Documentation
+## Testing Queue ##
+- To make queue works (after insert some transaction), do the following (using Docker):
+    - Run command -> docker exec -it microservice-app bash -c "sudo -u root /bin/bash"
+    - Run command -> php artisan queue:work
+    - Checkout in ./storage/logs the last modified file will contain the message(s).
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Unit Tests ##
+- To run unit tests, do the following (using Docker):
+    - Run command -> docker exec -it microservice-app bash -c "sudo -u root /bin/bash"
+    - Run command -> "./vendor/bin/phpunit"

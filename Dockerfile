@@ -53,5 +53,9 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+
 COPY . /var/www/html
 RUN cd /var/www/html && composer install
+RUN composer dump-autoload
+RUN chmod -R 777 storage
+
