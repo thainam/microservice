@@ -7,13 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class UserModel extends Model
 {
 
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
+    /**
+     * @var boolean
+     */
     public $timestamps = false;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -26,8 +30,6 @@ class UserModel extends Model
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
      * @var array
      */
     protected $hidden = [

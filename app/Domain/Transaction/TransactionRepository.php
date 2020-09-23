@@ -3,9 +3,13 @@
 namespace App\Domain\Transaction;
 
 use App\Domain\Transaction\Exceptions\TransactionNotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 
 class TransactionRepository implements TransactionRepositoryInterface
 {
+    /**
+     * @var TransactionModel
+     */
     private $model;
 
     public function __construct(TransactionModel $transactionModel)
@@ -13,7 +17,13 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->model = $transactionModel;
     }
 
-    public function create(Transaction $transaction)
+    /**
+     * Cria uma nova transação.
+     *
+     * @param Transaction $transaction
+     * @return int
+     */
+    public function create(Transaction $transaction): int
     {
         $transactionModel = $this->model;
 
@@ -27,7 +37,15 @@ class TransactionRepository implements TransactionRepositoryInterface
         return $transactionModel->id;
     }
 
-    public function update(Transaction $transaction, int $id)
+    /**
+     * Atualiza uma transação existente.
+     *
+     * @param Transaction $transaction
+     * @param int $id
+     * @throws TransactionNotFoundException
+     * @return int
+     */
+    public function update(Transaction $transaction, int $id): void
     {
         $model = $this->model;
         $transactionModel = $model->find($id);
@@ -42,12 +60,23 @@ class TransactionRepository implements TransactionRepositoryInterface
         $transactionModel->save();
     }
 
-    public function findById(int $id)
+    /**
+     * Busca uma transação pelo ID.
+     *
+     * @param int $id
+     * @return TransactionModel
+     */
+    public function findById(int $id): TransactionModel
     {
         return $this->model->find($id);
     }
 
-    public function getAll()
+    /**
+     * Busca todas as transações no sistema.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll(): Collection
     {
        return $this->model->all();
     }

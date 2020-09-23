@@ -7,9 +7,13 @@ use App\Domain\User\UserModel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
+/**
+ * Classe responsável por validar os requests
+ * de novas transações.
+ */
 class TransactionStoreRequest
 {
-    public static function rules()
+    public static function rules(): array
     {
         return [
             'payer' => 'required|integer|exists:users,id|different:payee',
@@ -18,7 +22,7 @@ class TransactionStoreRequest
         ];
     }
 
-    public static function messages()
+    public static function messages(): array
     {
         $messages = [
             'payer.required' => 'O usuário pagador deve ser informado.',
@@ -40,7 +44,15 @@ class TransactionStoreRequest
         return $messages;
     }
 
-    public static function validate(Request $request)
+    /**
+     * Efetua a validação do request com
+     * base nas regras acima.
+     *
+     * @param Request
+     * @throws TransactionStoreRequestException|ValidationException
+     * @return void
+     */
+    public static function validate(Request $request): void
     {
         $validator = Validator::make($request->all(), self::rules(), self::messages());
         if ($validator->fails()) {
@@ -51,7 +63,5 @@ class TransactionStoreRequest
         if ($payer->type == 'J') {
             throw new TransactionStoreRequestException(json_encode(['payer' => ['Lojistas não podem efetuar pagamento.']]), 400);
         }
-
-        return $validator;
     }
 }

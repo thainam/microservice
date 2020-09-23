@@ -6,6 +6,10 @@ namespace App\Domain\Transaction;
 
 use App\Domain\Transaction\Exceptions\TransactionStatusNotFoundException;
 
+/**
+ * Classe responsável por manipular os
+ * status das transações.
+ */
 class TransactionStatus
 {
     const PENDING = '0';
@@ -14,7 +18,15 @@ class TransactionStatus
 
     const REFUSED = '2';
 
-    public static function getStatus(string $code)
+    /**
+     * Retorna o nome baseado no
+     * número do status.
+     *
+     * @param string $code
+     * @throws TransactionStatusNotFoundException
+     * @return string
+     */
+    public static function getStatus(string $code): string
     {
         switch ($code) {
             case self::PENDING:

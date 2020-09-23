@@ -4,11 +4,19 @@ declare (strict_types = 1);
 
 namespace App\Domain\Transaction\Services;
 
+use App\Domain\Transaction\TransactionModel;
 use App\Domain\Transaction\TransactionStoreRequest;
 use Illuminate\Http\Request;
 
+/**
+ * Classe para manipular a solicitação
+ * de nova transação.
+ */
 class TransactionService  {
 
+    /**
+     * @var TransactionStoreRequest
+     */
     private $transactionStoreRequest;
 
     public function __construct(TransactionStoreRequest $transactionStoreRequest)
@@ -16,7 +24,12 @@ class TransactionService  {
         $this->transactionStoreRequest = $transactionStoreRequest;
     }
 
-    public function handle(Request $request)
+    /**
+     * @param Request $request
+     * @throws ValidationException
+     * @return TransactionModel
+     */
+    public function handle(Request $request): TransactionModel
     {
         try {
 

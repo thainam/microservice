@@ -4,8 +4,7 @@ declare (strict_types = 1);
 
 namespace App\Domain\User;
 
-use App\Domain\User\UserModel;
-use App\Domain\User\User;
+use App\Domain\User\{UserModel, User};
 
 interface UserRepositoryInterface
 {

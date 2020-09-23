@@ -6,12 +6,20 @@ use App\Domain\Transaction\Exceptions\TransactionNotifyException;
 use App\Domain\Transaction\Services\TransactionNotifyService;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Classe responsável por simular o
+ * envio de uma notificação.
+ */
 class SendNotificationEmailJob extends Job
 {
+    /**
+     * @var int
+     */
     private $payee;
 
     /**
-     * Create a new job instance.
+     * Cria uma nova instancia do Job.
+     * @param int $payee
      *
      * @return void
      */
@@ -21,11 +29,12 @@ class SendNotificationEmailJob extends Job
     }
 
     /**
-     * Execute the notify service job.
+     * Executa o serviço de notificação.
      *
+     * @throws TransactionNotifyException
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         try {
 

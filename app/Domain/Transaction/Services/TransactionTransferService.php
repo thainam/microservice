@@ -2,21 +2,37 @@
 
 namespace App\Domain\Transaction\Services;
 
-use App\Domain\Transaction\Exceptions\TransactionAuthorizeException;
-use App\Domain\Transaction\Exceptions\TransactionTransferException;
-use App\Domain\Transaction\TransactionRepository;
-use App\Domain\Transaction\Transaction;
-use App\Domain\Transaction\TransactionModel;
-use App\Domain\Transaction\TransactionStatus;
-use App\Domain\User\UserModel;
-use App\Domain\User\UserRepository;
+use App\Domain\Transaction\{
+    Exceptions\TransactionAuthorizeException,
+    Exceptions\TransactionTransferException,
+    TransactionRepository,
+    Transaction,
+    TransactionModel,
+    TransactionStatus,
+};
+use App\Domain\User\{UserModel, UserRepository};
+use Illuminate\Support\Facades\{Log, Queue};
 use App\Jobs\SendNotificationEmailJob;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Queue;
 
+/**
+ * Classe responsável por processar
+ * as transações.
+ */
 class TransactionTransferService  {
 
+    /**
+     * @var TransactionRepository
+     */
     private $transactionRepository;
+
+    /**
+     * @var UserModel
+     */
+    private $userModel;
+
+    /**
+     * @var float
+     */
     private $amount;
 
     public function __construct(int $payer, int $payee, float $amount)
@@ -34,7 +50,13 @@ class TransactionTransferService  {
         $this->amount = $amount;
     }
 
-    public function handle()
+    /**
+     * Processa a transação.
+     *
+     * @throws TransactionTransferException|TransactionAuthorizeException
+     * @return TransactionModel
+     */
+    public function handle(): TransactionModel
     {
         if ($this->payer->isStore()) {
             throw new TransactionTransferException('Lojistas não podem efetuar pagamento.', 400);
@@ -47,6 +69,8 @@ class TransactionTransferService  {
         try {
             $this->createTransaction();
 
+            $this->decreasePayerWallet();
+
             (new TransactionAuthorizeService())->getAuthorization($this->amount);
 
             $this->transaction->setStatus(TransactionStatus::APPROVED);
@@ -54,6 +78,7 @@ class TransactionTransferService  {
             $this->transactionRepository->update($this->transaction, $this->transactionId);
 
             $this->increasePayeeWallet();
+
 
             Queue::push(new SendNotificationEmailJob($this->payee->getId()));
 
@@ -73,7 +98,12 @@ class TransactionTransferService  {
         }
     }
 
-    public function createTransaction()
+    /**
+     * Cria instância da nova transação.
+     *
+     * @return int
+     */
+    public function createTransaction(): int
     {
         $this->transaction->fill([
             'payer' => $this->payer->getId(),
@@ -82,23 +112,39 @@ class TransactionTransferService  {
             'status' => TransactionStatus::PENDING
         ]);
 
-        $this->decreasePayerWallet();
-
         return $this->transactionId = $this->transactionRepository->create($this->transaction);
     }
 
+    /**
+     * Efetua o débito na carteira
+     * do usuário pagador.
+     *
+     * @return void
+     */
     private function decreasePayerWallet()
     {
         $repository = new UserRepository($this->userModel);
         $repository->decreaseWallet($this->payer->getId(), $this->amount);
     }
 
+    /**
+     * Efetua o crédito na carteira
+     * do usuário pagador.
+     *
+     * @return void
+     */
     private function increasePayeeWallet()
     {
         $repository = new UserRepository($this->userModel);
         $repository->increaseWallet($this->payee->getId(), $this->amount);
     }
 
+    /**
+     * Efetua o estorno na carteira
+     * do usuário pagador.
+     *
+     * @return void
+     */
     private function chargebackPayerWallet()
     {
         $repository = new UserRepository($this->userModel);

@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionModel extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'user_transactions';
 
-    protected $fillable = ['status','payer','payee'];
+    /**
+     * @var array
+     */
+    protected $fillable = ['status','payer','payee','amount'];
 }

@@ -6,14 +6,29 @@ namespace App\Domain\Transaction;
 
 class Transaction
 {
+    /**
+     * @var int|null
+     */
     private $id;
 
+    /**
+     * @var int
+     */
     private $payer;
 
+    /**
+     * @var int
+     */
     private $payee;
 
+    /**
+     * @var float
+     */
     private $amount;
 
+    /**
+     * @var string
+     */
     private $status;
 
     public function setId(int $id)
@@ -21,51 +36,84 @@ class Transaction
         $this->id = $id;
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param int $payer
+     */
     public function setPayer(int $payer)
     {
         $this->payer = $payer;
     }
 
-    public function getPayer()
+    /**
+     * @return int
+     */
+    public function getPayer(): int
     {
         return $this->payer;
     }
 
+    /**
+     * @param int $payee
+     */
     public function setPayee(int $payee)
     {
         $this->payee = $payee;
     }
 
-    public function getPayee()
+    /**
+     * @return int
+     */
+    public function getPayee(): int
     {
         return $this->payee;
     }
 
+    /**
+     * @param float $amount
+     */
     public function setAmount(float $amount)
     {
         $this->amount = $amount;
     }
 
-    public function getAmount()
+    /**
+     * @return float
+     */
+    public function getAmount(): float
     {
         return $this->amount;
     }
 
+    /**
+     * @param string $status
+     */
     public function setStatus(string $status)
     {
         $this->status = $status;
     }
 
-    public function getStatus()
+    /**
+     * @return string
+     */
+    public function getStatus(): string
     {
         return $this->status;
     }
 
+    /**
+     * Preenche o objeto.
+     *
+     * @param array $transactionData
+     * @return Transaction
+     */
     public function fill(array $transactionData)
     {
         if (isset($transactionData['id'])) {

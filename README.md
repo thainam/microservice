@@ -10,6 +10,7 @@
         - Run command -> use microservice;
 
 ## Available Routes ##
+    - The port 8000 is being used: http://localhost:8000/
     - (GET) /user
     - (POST) /transaction
 

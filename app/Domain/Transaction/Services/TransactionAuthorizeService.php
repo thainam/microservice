@@ -7,10 +7,20 @@ namespace App\Domain\Transaction\Services;
 use App\Domain\Transaction\Exceptions\TransactionAuthorizeException;
 use \GuzzleHttp\Client as GuzzleHttpClient;
 
+/**
+ * Classe responsável por consultar
+ * o serviço externo de autorização.
+ */
 class TransactionAuthorizeService
 {
+    /**
+     * @var GuzzleHttpClient
+     */
     private $guzzleHttpClient;
 
+    /**
+     * Link do serviço autorizador.
+     */
     const AUTHORIZATION_LINK = 'https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6';
 
     public function __construct()
@@ -18,7 +28,14 @@ class TransactionAuthorizeService
         $this->guzzleHttpClient = new GuzzleHttpClient();
     }
 
-    public function getAuthorization(float $amount)
+    /**
+     * Faz a requisição ao serviço.
+     *
+     * @param float $amount
+     * @throws TransactionAuthorizeException
+     * @return boolean|null
+     */
+    public function getAuthorization(float $amount): ?bool
     {
         try {
             $response = $this->guzzleHttpClient->request('POST', self::AUTHORIZATION_LINK, ['json' => ['amount' => $amount]]);

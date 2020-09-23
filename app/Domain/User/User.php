@@ -1,100 +1,183 @@
 <?php
+
 declare (strict_types = 1);
 
 namespace App\Domain\User;
 
 class User
 {
+    /**
+     * @var int
+     */
     private $id;
+
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var string
+     */
     private $type;
+
+    /**
+     * @var string
+     */
     private $cpf;
+
+    /**
+     * @var string
+     */
     private $cnpj;
+
+    /**
+     * @var string
+     */
     private $email;
+
+    /**
+     * @var string
+     */
     private $password;
+
+    /**
+     * @var float
+     */
     private $wallet = 0;
 
+    /**
+     * @param int $id
+     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $type
+     */
     public function setType(string $type)
     {
         $this->type = $type;
     }
 
-    public function getType()
+    /**
+     * @return string
+     */
+    public function getType(): string
     {
         return $this->type;
     }
 
+    /**
+     * @param string $cpf
+     */
     public function setCpf(string $cpf)
     {
         $this->cpf = $cpf;
     }
 
-    public function getCpf()
+    /**
+     * @return string
+     */
+    public function getCpf(): string
     {
         return $this->cpf;
     }
 
+    /**
+     * @param string $cnpj
+     */
     public function setCnpj(string $cnpj)
     {
         $this->cnpj = $cnpj;
     }
 
-    public function getCnpj()
+    /**
+     * @return string
+     */
+    public function getCnpj(): ?string
     {
         return $this->cnpj;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail(string $email)
     {
         $this->email = $email;
     }
 
-    public function getEmail()
+    /**
+     * @return string
+     */
+    public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $password
+     */
     public function setPassword(string $password)
     {
         $this->password = $password;
     }
 
-    public function getPassword()
+    /**
+     * @return string
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param float $wallet
+     */
     public function setWallet(float $wallet)
     {
         $this->wallet = $wallet;
     }
 
-    public function getWallet()
+    /**
+     * @return float
+     */
+    public function getWallet(): float
     {
         return $this->wallet;
     }
 
-    public function isStore()
+    /**
+     * @return boolean
+     */
+    public function isStore(): bool
     {
         return ($this->type == 'J' ? true : false);
     }
