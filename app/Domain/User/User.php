@@ -14,7 +14,7 @@ class User
     /**
      * @var string
      */
-    private $name;
+    private $fullname;
 
     /**
      * @var string
@@ -63,19 +63,19 @@ class User
     }
 
     /**
-     * @param string $name
+     * @param string $fullname
      */
-    public function setName(string $name)
+    public function setFullName(string $fullname)
     {
-        $this->name = $name;
+        $this->fullname = $fullname;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getFullName(): string
     {
-        return $this->name;
+        return $this->fullname;
     }
 
     /**
@@ -194,8 +194,8 @@ class User
             $this->setId($userData['id']);
         }
 
-        if (isset($userData['name'])) {
-            $this->setName($userData['name']);
+        if (isset($userData['fullname'])) {
+            $this->setFullName($userData['fullname']);
         }
 
         if (isset($userData['type'])) {
